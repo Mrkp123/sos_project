@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOS Alert</title>
+  <script>
+    async function sendSOS() {
+      let name = document.getElementById("name").value || "Anonymous";
+      let msg = document.getElementById("msg").value || "SOS! Need Help!";
+      
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          let data = {
+            name,
+            msg,
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+            time: new Date().toISOString()
+          };
+          await fetch("http://localhost:5000/sos", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+          });
+          alert("🚨 SOS Sent!");
+        });
+      } else {
+        alert("Geolocation not supported");
+      }
+    }
+  </script>
+</head>
+<body class="p-6 text-center">
+  <h2 class="text-xl font-bold">Tourist SOS</h2>
+  <input id="name" placeholder="Your name (optional)" class="border p-2 my-2"><br>
+  <input id="msg" placeholder="Message (optional)" class="border p-2 my-2"><br>
+  <button onclick="sendSOS()" style="background:red;color:white;padding:20px;border-radius:10px;font-size:20px;">🚨 SOS</button>
+</body>
+</html>
