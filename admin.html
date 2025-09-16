@@ -15,7 +15,7 @@
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
     async function loadAlerts() {
-      let res = await fetch("http://localhost:5000/alerts");
+      let res = await fetch("http://localhost:5000/sos");
       let alerts = await res.json();
 
       document.getElementById("alerts").innerHTML = "";
